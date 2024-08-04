@@ -2,6 +2,7 @@ import 'package:acolyte/login.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -27,49 +28,9 @@ class _SignupState extends State<Signup> {
 
   bool signup = false;
   String userid = "";
-  getCountry() {
-    showCountryPicker(
-        context: context,
-        countryListTheme: CountryListThemeData(
-          flagSize: 25,
-          backgroundColor: Colors.white,
-          textStyle: TextStyle(fontSize: 16, color: Colors.blueGrey),
-          bottomSheetHeight: 500, // Optional. Country list modal height
-          //Optional. Sets the border radius for the bottomsheet.
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.0),
-            topRight: Radius.circular(20.0),
-          ),
-          //Optional. Styles the search field.
-          inputDecoration: InputDecoration(
-            labelText: 'Search',
-            hintText: 'Start typing to search',
-            prefixIcon: const Icon(Icons.search),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: const Color(0xFF8C98A8).withOpacity(0.2),
-              ),
-            ),
-          ),
-        ),
-        onSelect: (Country country) => setState(() {
-              countrytext.text = country.displayName;
-            }));
-  }
+  getCountry() {}
 
-  getCurrency() {
-    showCurrencyPicker(
-      context: context,
-      showFlag: true,
-      showCurrencyName: true,
-      showCurrencyCode: true,
-      onSelect: (Currency currency) {
-        setState(() {
-          currencytext.text = currency.name;
-        });
-      },
-    );
-  }
+  getCurrency() {}
 
   bool isValidEmail(String email) {
     // Use a regular expression to validate the email format
@@ -166,12 +127,6 @@ class _SignupState extends State<Signup> {
                                 pickerDialogStyle: PickerDialogStyle(
                                     backgroundColor: Colors.white),
                                 keyboardType: TextInputType.phone,
-                                onChanged: (value) {
-                                  setState(() {
-                                    phonenumber.text =
-                                        value.countryCode + value.number;
-                                  });
-                                },
                                 decoration: InputDecoration(
                                     hintText: 'Phone Number',
                                     prefixIcon: Icon(Icons.phone)),
@@ -186,6 +141,38 @@ class _SignupState extends State<Signup> {
                                 height: 15,
                               ),
                               TextFormField(
+                                readOnly: true,
+                                onTap: () => showCountryPicker(
+                                    context: context,
+                                    countryListTheme: CountryListThemeData(
+                                      flagSize: 25,
+                                      backgroundColor: Colors.white,
+                                      textStyle: TextStyle(
+                                          fontSize: 16, color: Colors.blueGrey),
+                                      bottomSheetHeight:
+                                          500, // Optional. Country list modal height
+                                      //Optional. Sets the border radius for the bottomsheet.
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20.0),
+                                        topRight: Radius.circular(20.0),
+                                      ),
+                                      //Optional. Styles the search field.
+                                      inputDecoration: InputDecoration(
+                                        labelText: 'Search',
+                                        hintText: 'Start typing to search',
+                                        prefixIcon: const Icon(Icons.search),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: const Color(0xFF8C98A8)
+                                                .withOpacity(0.2),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    onSelect: (Country country) => setState(() {
+                                          countrytext.text =
+                                              country.displayName;
+                                        })),
                                 keyboardType: TextInputType.text,
                                 controller: countrytext,
                                 decoration: InputDecoration(
@@ -203,6 +190,18 @@ class _SignupState extends State<Signup> {
                                 height: 15,
                               ),
                               TextFormField(
+                                readOnly: true,
+                                onTap: () => showCurrencyPicker(
+                                  context: context,
+                                  showFlag: true,
+                                  showCurrencyName: true,
+                                  showCurrencyCode: true,
+                                  onSelect: (Currency currency) {
+                                    setState(() {
+                                      currencytext.text = currency.name;
+                                    });
+                                  },
+                                ),
                                 keyboardType: TextInputType.text,
                                 controller: currencytext,
                                 decoration: InputDecoration(
@@ -220,10 +219,13 @@ class _SignupState extends State<Signup> {
                                 height: 15,
                               ),
                               TextFormField(
-                                //  keyboardType: TextInputType.,
+                                keyboardType: TextInputType.number,
                                 obscureText: obscureText,
                                 controller: password,
-
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(4)
+                                ],
                                 decoration: InputDecoration(
                                   hintText: 'Enter 4-Digit Pin',
                                   prefixIcon: IconButton(
@@ -254,9 +256,13 @@ class _SignupState extends State<Signup> {
                                 height: 15,
                               ),
                               TextFormField(
-                                  //  keyboardType: TextInputType.,
+                                  keyboardType: TextInputType.number,
                                   obscureText: obscureText,
                                   controller: confirmpassword,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(4)
+                                  ],
                                   decoration: InputDecoration(
                                     hintText: 'Confirm Pin',
                                     prefixIcon: IconButton(
@@ -310,9 +316,7 @@ class _SignupState extends State<Signup> {
                     ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          setState(() {
-                            _isLoading = true;
-                          });
+                          print(phonenumber.text);
 
                           // Navigator.push(
                           //     context,

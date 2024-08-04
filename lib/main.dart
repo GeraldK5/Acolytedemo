@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context)
-          .copyWith(textScaler: const TextScaler.linear(0.85)),
+          .copyWith(textScaler: const TextScaler.linear(0.8)),
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,

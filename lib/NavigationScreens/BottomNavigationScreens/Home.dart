@@ -1,4 +1,5 @@
 import 'package:acolyte/NavigationScreens/Groups/creategroup.dart';
+import 'package:acolyte/NavigationScreens/Groups/groupdetails.dart';
 import 'package:acolyte/NavigationScreens/Groups/joinGroup.dart';
 import 'package:flutter/material.dart';
 
@@ -10,12 +11,49 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Map<String, dynamic>> Groups = [
-    {"Group-Name": "Group 1", "status": "active"},
-    {"Group-Name": "Group 2", "status": "active"},
-    {"Group-Name": "Group 5", "status": "inactive"},
-    {"Group-Name": "Group 3", "status": "inactive"},
-  ];
+List<Map<String, dynamic>> Groups = [
+  {
+    "Group-Name": "Group 1",
+    "status": "active",
+    "totalsavings": "4503300",
+    "members": [
+      {"name": "Alice", "role": "Admin"},
+      {"name": "Bob", "role": "Active Member"},
+      {"name": "Charlie", "role": "Active Member"}
+    ]
+  },
+  {
+    "Group-Name": "Group 2",
+    "status": "active",
+    "totalsavings": "900000",
+    "members": [
+      {"name": "David", "role": "Admin"},
+      {"name": "Eve", "role": "Active Member"},
+      {"name": "Frank", "role": "Active Member"}
+    ]
+  },
+  {
+    "Group-Name": "Group 5",
+    "status": "inactive",
+    "totalsavings": "3409000",
+    "members": [
+      {"name": "Grace", "role": "Admin"},
+      {"name": "Heidi", "role": "Active Member"},
+      {"name": "Ivan", "role": "Active Member"}
+    ]
+  },
+  {
+    "Group-Name": "Group 3",
+    "status": "inactive",
+    "totalsavings": "2300000",
+    "members": [
+      {"name": "Judy", "role": "Admin"},
+      {"name": "Mallory", "role": "Active Member"},
+      {"name": "Niaj", "role": "Active Member"}
+    ]
+  }
+];
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -240,6 +278,11 @@ class _HomeState extends State<Home> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: Groups.length,
                   itemBuilder: (context, index) => InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                GroupDetails(group: Groups[index]))),
                     child: Padding(
                       padding: EdgeInsets.all(10),
                       child: Column(
